@@ -1,0 +1,56 @@
+//kotlinVersions
+def kotlin_version = "1.2.21"
+//sdkVersions
+def supportLibVersion = '26.1.0'
+/*Make sure that you have the $anko_version settled in your gradle file at the project level:
+  https://github.com/Kotlin/anko*/
+def ankoVersion = '0.10.4'
+//nettyVersions
+def nettyVesion = '4.1.20.Final'
+//GsonVersions
+def gosnVesion = '2.8.2'
+//https://github.com/greenrobot/EventBus
+def eventbusVesion='3.1.1'
+dependencies {
+    //默认加载包
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+//    implementation 'com.google.dagger:dagger:2.10'
+//    kapt 'com.google.dagger:dagger-compiler:2.10'
+//    kapt 'com.android.databinding:compiler:3.0.0'
+//    implementation 'de.greenrobot:eventbus:2.4.0'
+
+    // Android Support
+    implementation "com.android.support:support-v4:$supportLibVersion"
+    implementation "com.android.support:appcompat-v7:$supportLibVersion"
+    implementation "com.android.support:design:$supportLibVersion"
+    // Kotlin 针对 JDK 7 或 JDK 8
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    //implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+    /* https://github.com/Kotlin/anko  学习文档https://juejin.im/entry/5a13ea795188252abc5dfcd8
+      1.find()代替findViewById()
+       2.longToast()代替原生Toast()
+       3.startActivity(vararg params: Pair<String, Any>代替原生startActivity()
+       4.Anko SQLite简化原生的SQLite的使用
+       5.Dialogs的简化使用  */
+    implementation "org.jetbrains.anko:anko:$ankoVersion"
+    //使用netty框架进入网络传输数据
+    implementation "io.netty:netty-all:$nettyVesion"
+    //使用gson解析数据和封装数据
+    implementation "com.google.code.gson:gson:$gosnVesion"
+    /* EventBus是一款Android下的发布/订阅事件总线机制。
+       可以代替Intent、Handler、Broadcast等在Fragment、Activity之间传递消息。
+       优点：开销小，代码优雅。将发送者和接受者解耦。 */
+    implementation "org.greenrobot:eventbus:$eventbusVesion"
+
+    /*multidex 在android5.0----之前----，每一个android应用中只会含有一个dex文件，
+     但是因为Android系统本身的BUG，使得这个dex的方法数量被限制在65535之内，这就是著名的"64K(641024)"*事件*/
+    implementation 'com.android.support:multidex:1.0.2'//防止包出现混乱
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+
+}
