@@ -1,14 +1,14 @@
-package com.ftrd.flashlight
+package com.ftrd.flashlight.activity
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.widget.Toast
 import android.widget.Toast.LENGTH_SHORT
 import com.ftrd.flashlight.FileKt.database
 import com.ftrd.flashlight.FlashLight.Companion.instance
-import com.ftrd.flashlight.nettys.NettyConnect
-import com.ftrd.flashlight.nettys.NettyConnect.channel
+import com.ftrd.flashlight.R
 
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -19,10 +19,14 @@ import org.jetbrains.anko.db.*
  * @date:  2018-02-01 16:47
  * @description:
  */
-class MainActivity : AppCompatActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+class MainActivity : BaseActivity() {
+    override fun into(savedInstanceState: Bundle?) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
         setContentView(R.layout.activity_main);
+        //recyclerview
+        //RecyclerView ds;
+      var  fdsa:RecyclerView ;
      hello.setText("");
        hello.setOnClickListener {
            Toast.makeText(instance, "Hello, views!", LENGTH_SHORT).show();
@@ -31,7 +35,6 @@ class MainActivity : AppCompatActivity() {
        }
 //nnew Thread(new Runnable() {
         Thread(Runnable {
-
 
             database.use {
 

@@ -24,9 +24,10 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        jackOptions {
+        //运行提示可能被抛弃
+       /* jackOptions {
             enabled true
-        }
+        }*/
     }
     buildTypes {
         debug {
@@ -43,9 +44,9 @@ android {
     androidExtensions {
         experimental = true
     }
-/*  compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
+ compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
     compileOptions.targetCompatibility JavaVersion.VERSION_1_8
-    compileOptions {
+    /* compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }*/
