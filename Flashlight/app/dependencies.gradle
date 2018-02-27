@@ -26,10 +26,11 @@ dependencies {
     implementation "com.android.support:support-v4:$supportLibVersion"
     implementation "com.android.support:appcompat-v7:$supportLibVersion"
     implementation "com.android.support:design:$supportLibVersion"
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
   //  implementation "com.android.support:recyclerview-v7:$supportLibVersion"
     // Kotlin 针对 JDK 7 或 JDK 8
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
-    //implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+   // implementation "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     /* https://github.com/Kotlin/anko  学习文档https://juejin.im/entry/5a13ea795188252abc5dfcd8
       1.find()代替findViewById()
@@ -38,7 +39,7 @@ dependencies {
        4.Anko SQLite简化原生的SQLite的使用
        5.Dialogs的简化使用  */
     implementation "org.jetbrains.anko:anko:$ankoVersion"
-    //使用netty框架进入网络传输数据
+    //使用netty框架进入网络传输数据io.netty:netty-all:4.1.20.Final
     implementation "io.netty:netty-all:$nettyVesion"
     //使用gson解析数据和封装数据
     implementation "com.google.code.gson:gson:$gosnVesion"
@@ -49,9 +50,10 @@ dependencies {
 
     /*multidex 在android5.0----之前----，每一个android应用中只会含有一个dex文件，
      但是因为Android系统本身的BUG，使得这个dex的方法数量被限制在65535之内，这就是著名的"64K(641024)"*事件*/
-    implementation 'com.android.support:multidex:1.0.2'//防止包出现混乱
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    implementation 'com.android.support:multidex:1.+'//防止包出现混乱
+    //测试包
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
 }

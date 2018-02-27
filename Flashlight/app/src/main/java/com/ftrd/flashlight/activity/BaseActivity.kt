@@ -21,13 +21,12 @@ open class BaseActivity : AppCompatActivity() {
 //   如果设置了abstract就会TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     open fun into(savedInstanceState: Bundle?) {};
     override fun onDestroy() {
-        super.onDestroy()
         close();
         if ( EventBus.getDefault().isRegistered(this)) {
             //如果有注册eventbus则在结束当前页面时关闭
             EventBus.getDefault().unregister(this);
         }
-
+        super.onDestroy()
     }
     //页面被关闭生命周期到了onDestroy
     open fun close(){}
