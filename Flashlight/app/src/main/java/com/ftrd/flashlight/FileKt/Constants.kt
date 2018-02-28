@@ -65,8 +65,10 @@ object FinalValue {
 //可改变的值声名
 object DefaultValue {
     //使用手电筒时，本身要刷卡的，在这里设置为一个默认值登录
-    var USER_NAME: String = "000019"; //000037  ,000019   ,000015
-    var USER_PWD: String = "9E74D299"; //37 9BDFF075;//  19 9E74D299  15  9BDFF076
+    var USER_NAME: String = "000015"; //000037  ,000019   ,000015
+    //刷卡之后得到的登录用户名和密码都是用的这一个
+    var USER_PWD: String = "9BDFF076"; //37 9BDFF075;//  19 9E74D299  //15  9BDFF076
+    var NICK_NAME:String?=null;//登录成功返回的名称
     //保存根目录文件地址
     var ROOT_DIR: String = "";//在Application初始化中赋值，其他地方直接调用即可
     //连接的wifi

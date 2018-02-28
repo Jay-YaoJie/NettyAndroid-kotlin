@@ -3,6 +3,7 @@ package com.ftrd.flashlight.util
 
 import com.ftrd.flashlight.FileKt.LogUtils
 import android.app.Activity
+import com.ftrd.flashlight.FileKt.DelegatesExt
 import java.util.*
 
 
@@ -11,30 +12,22 @@ import java.util.*
  * @date:  2018-02-24 17:24
  * @description:activity堆栈管理
  */
-open class ActivitiesManager {
+object ActivitiesManager {
 
-    private var mActivityStack: Stack<Activity>? = null
-    private var mActivitiesManager: ActivitiesManager? = null
-
-
+    private var mActivityStack: Stack<Activity> by DelegatesExt.notNullSingleValue<Stack<Activity>>();
     //初始货Activity堆管理
-    open fun getInstance(): ActivitiesManager {
-        if (null == mActivitiesManager) {
-            mActivitiesManager = ActivitiesManager()
-            if (null == mActivityStack) {
-                mActivityStack = Stack<Activity>()
-            }
-        }
-        return mActivitiesManager as ActivitiesManager
+    fun getActivitiesManager() {
+        mActivityStack = Stack<Activity>()
+
     }
 
     //获得保存的Activity数量
-    open fun stackSize(): Int {
+    fun stackSize(): Int {
         return mActivityStack!!.size
     }
 
     //获得当前的Activity
-    open fun getCurrentActivity(): Activity? {
+    fun getCurrentActivity(): Activity? {
         var activity: Activity? = null
 
         try {
@@ -47,7 +40,7 @@ open class ActivitiesManager {
     }
 
     //退出当前Activity
-    open fun popActivity() {
+    fun popActivity() {
         var activity = mActivityStack!!.lastElement()
         if (null != activity) {
             LogUtils.i("com.ftrd.flashlight.util.ActivitiesManager", "popActivity-->" + activity!!.javaClass.getSimpleName())
@@ -58,7 +51,7 @@ open class ActivitiesManager {
     }
 
     //退出当前指定的Activity
-    open fun popActivity(activity: Activity?) {
+    fun popActivity(activity: Activity?) {
         var activity = activity
         if (null != activity) {
             LogUtils.i("com.ftrd.flashlight.util.ActivitiesManager", "popActivity-->" + activity.javaClass.simpleName)
@@ -69,21 +62,23 @@ open class ActivitiesManager {
     }
 
     //添加Activity
-    open fun pushActivity(activity: Activity) {
+    fun pushActivity(activity: Activity) {
         mActivityStack!!.add(activity)
         LogUtils.i("com.ftrd.flashlight.util.ActivitiesManager", "pushActivity-->" + activity.javaClass.simpleName)
     }
-
-    open fun popAllActivities() {
+    //关闭所有的Activity，并退出系统
+    fun popAllActivities() {
         while (!mActivityStack!!.isEmpty()) {
             val activity = getCurrentActivity() ?: break
             activity.finish()
             popActivity(activity)
         }
+        //退出系统
+        System.exit(0)
     }
 
-    //关闭所有的Activity
-    open fun popSpecialActivity(cls: Class<*>) {
+
+    fun popSpecialActivity(cls: Class<*>) {
         try {
             val iterator = mActivityStack!!.iterator()
             var activity: Activity? = null
@@ -96,6 +91,8 @@ open class ActivitiesManager {
                 }
             }
         } catch (e: Exception) {
+
+        }finally {
 
         }
 

@@ -136,7 +136,7 @@ android {
         experimental = true
     }
     //具体是4g还是多少可以看电脑配置修改（2g、3g、6g、8g）
-    dexOptions {
-        javaMaxHeapSize "4g"
-    }
+//    dexOptions {
+//        javaMaxHeapSize "4g"
+//    }
 }

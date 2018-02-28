@@ -24,7 +24,6 @@
                 android:id="@+id/acc_car"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:textColor="#fff"
                 android:textSize="25sp"
                 android:gravity="center"
@@ -54,31 +53,23 @@
                 android:background="#13c0ac"
                 android:layout_height="40dp"
                 android:layout_width="0dp"
-                android:text="登陆" android:id="@+id/debark"
+                android:text="登陆"
+                android:id="@+id/loginButton"
                 android:focusable="false"
                 android:textColor="#fff"
                 android:layout_weight="1"/>
 
             <Button
-                android:background="#13c0ac"
+                android:background="@color/loginButtonOFF"
                 android:layout_height="40dp"
                 android:layout_width="0dp"
-                android:text="取消"
-                android:id="@+id/cancel"
+                android:text="退出"
+                android:id="@+id/exitButton"
                 android:textColor="#fff"
                 android:layout_weight="1"
                 android:layout_marginLeft="10dp"
                 />
-            <Button
-                android:background="#13c0ac"
-                android:layout_height="40dp"
-                android:layout_width="0dp"
-                android:text="地址"
-                android:id="@+id/ip"
-                android:textColor="#fff"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                />
+
         </LinearLayout>
 
     </LinearLayout>

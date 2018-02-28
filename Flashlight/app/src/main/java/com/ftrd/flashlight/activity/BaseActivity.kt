@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.KeyEvent
 import com.ftrd.flashlight.FileKt.LogUtils
+import com.ftrd.flashlight.util.ActivitiesManager.popActivity
+import com.ftrd.flashlight.util.ActivitiesManager.pushActivity
 import org.greenrobot.eventbus.EventBus
 import kotlin.properties.Delegates
 
@@ -17,6 +19,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         into(savedInstanceState);
+        pushActivity(this);//添加当前activity
     }
 //   如果设置了abstract就会TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     open fun into(savedInstanceState: Bundle?) {};
@@ -26,6 +29,7 @@ open class BaseActivity : AppCompatActivity() {
             //如果有注册eventbus则在结束当前页面时关闭
             EventBus.getDefault().unregister(this);
         }
+        popActivity(this);//关闭当前activity
         super.onDestroy()
     }
     //页面被关闭生命周期到了onDestroy

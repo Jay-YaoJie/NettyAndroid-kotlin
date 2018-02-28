@@ -2,4 +2,6 @@
 <resources>
 
     <color name="color_title">#141f5d</color>
+    <color name="loginButtonNO">#13c0ac</color>
+    <color name="loginButtonOFF">#808080</color>
 </resources>

@@ -11,6 +11,7 @@ import com.ftrd.flashlight.util.CrashHandler
 import android.support.multidex.MultiDex
 import android.support.multidex.MultiDexApplication
 import com.ftrd.flashlight.nettys.NettyConnect.destroy
+import com.ftrd.flashlight.util.ActivitiesManager.getActivitiesManager
 
 
 /**
@@ -38,6 +39,8 @@ class FlashLight : MultiDexApplication() {
        //打开日志工具，主要是保存异常信息
          //CrashHandler.getInit().init();//暂时出现异常交给系统处理，，，，没有自己处理
         NettyConnect.reConnect();
+        //初始化activity堆栈管理
+        getActivitiesManager()
     }
 
     override fun onTerminate() {

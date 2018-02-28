@@ -19,7 +19,6 @@ class HeartbeatDecode : ByteToMessageDecoder() {
     private var cmd = 0
 
     override fun decode(ctx: ChannelHandlerContext?, `in`: ByteBuf?, out: MutableList<Any>?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         if (`in`!!.readableBytes() < 4) {
             return
         }
