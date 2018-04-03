@@ -17,15 +17,15 @@ kapt {
 }
 android {
     // 编译SDK的版本
-    compileSdkVersion 26
+    compileSdkVersion 25
     // build tools的版本
-    //buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.3"
     //默认配置
     defaultConfig {
         //应用的包名
         applicationId "com.ftrd.flashlight"
         minSdkVersion 15
-        targetSdkVersion 26
+        targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -39,8 +39,12 @@ android {
 //            enabled true
 //        }
     }
+
     //aapt配置
     aaptOptions {
+        //防止检查9图时出现异常
+        cruncherEnabled = false
+        useNewCruncher = false
         //不用压缩的文件
         noCompress 'pak', 'dat', 'bin', 'notice'
         //打包时候要忽略的文件
@@ -61,17 +65,17 @@ android {
     sourceSets {
         main {
             //定义多个资源文件夹,这种情况下，两个资源文件夹具有相同优先级，即如果一个资源在两个文件夹都声明了，合并会报错。
-           // res.srcDirs = ['src/main/res', 'src/main/res2']
+            // res.srcDirs = ['src/main/res', 'src/main/res2']
             res.srcDirs = ['src/main/res']
             assets.srcDirs = ['src/main/assets']
             manifest.srcFile 'src/main/AndroidManifest.xml'
             jni.srcDirs = []
             //jni lib的位置
-          //  jniLibs.srcDirs = jniLibs.srcDirs << 'src/jniLibs'
-         //   jniLibs.srcDirs = ['src/main/libs']
+            //  jniLibs.srcDirs = jniLibs.srcDirs << 'src/jniLibs'
+            //   jniLibs.srcDirs = ['src/main/libs']
             assets.srcDirs = ['assets']
             //指定多个源文件目录
-          //  java.srcDirs = ['src/main/java', 'src/main/aidl']
+            //  java.srcDirs = ['src/main/java', 'src/main/aidl']
             java.srcDirs = ['src/main/java']
         }
     }
@@ -96,7 +100,7 @@ android {
             zipAlignEnabled true
             debuggable false
             //去除没有用到的资源文件，要求minifyEnabled为true才生效
-           //shrinkResources true
+            //shrinkResources true
             // 混淆文件的位置
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
 
@@ -140,3 +144,12 @@ android {
 //        javaMaxHeapSize "4g"
 //    }
 }
+dependencies {
+    //默认加载包
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+
+}
+

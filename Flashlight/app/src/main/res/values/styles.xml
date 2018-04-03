@@ -12,4 +12,32 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+    <!--全局layout 使用的背景-->
+    <style name="layout_style">
+      <!--  xmlns:android=http://schemas.android.com/apk/res/android
+             xmlns:toos="http://schemas.android.com/tools"
+     xmlns:toos="http://schemas.android.com/apk/res-auto"-->
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:background">@color/colorBackground</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--text样式-->
+    <style name="text_style">
+        <item name="android:textSize">25sp</item>
+        <item name="android:textColor">@drawable/text_color</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+    <!--button样式 -->
+    <style name="button_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+        <item name="android:background">@drawable/button_selector</item>
+        <item name="android:textColor">@drawable/text_color</item>
+        <item name="android:layout_margin">30dp</item>
+    </style>
 </resources>

@@ -1,23 +1,20 @@
 package com.ftrd.flashlight.nettys
 
 import com.ftrd.flashlight.FileKt.DelegatesExt
-import com.ftrd.flashlight.FileKt.FinalValue;
 import com.ftrd.flashlight.FileKt.FinalValue.COMMAND_IP
 import com.ftrd.flashlight.FileKt.FinalValue.COMMAND_PORT
 import com.ftrd.flashlight.FileKt.LogUtils;
-import com.ftrd.flashlight.nettys.codes.HeartbeatDecode
-import com.ftrd.flashlight.nettys.codes.LoginEncode
-import com.ftrd.flashlight.nettys.codes.RegisterEncode
+import com.ftrd.flashlight.nettys.codes.*
 import com.ftrd.flashlight.nettys.handlers.MsgHandler
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.*
 import io.netty.channel.nio.NioEventLoopGroup
-import io.netty.channel.socket.SocketChannel;
+import io.netty.channel.socket.SocketChannel
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.string.StringEncoder
 import java.nio.charset.Charset
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
-
 
 /**
  * @author: Jeff <15899859876@qq.com>
@@ -47,7 +44,7 @@ object NettyConnect {
     //   }
 
     //创建连接方法,如果要调用连接，直接调用此方法即可( NettyConnect.reConnect() )
-    fun reConnect() {
+    fun nettyConnect() {
         if (mThread == null) {
             mThread = object : Thread("NettyConnect.reConnect") {
                 override fun run() {
@@ -62,16 +59,20 @@ object NettyConnect {
                                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10000 * 10)//设置连接超时时间
                                 .option(ChannelOption.SO_KEEPALIVE, true)
                                 //.remoteAddress(host, port)
-                                .handler(object : ChannelInitializer<SocketChannel >() {
-                                     @kotlin.jvm.Throws(java.lang.Exception::class)
-                                    override fun initChannel(ch: SocketChannel ) {
+                                .handler(object : ChannelInitializer<SocketChannel>() {
+                                    @kotlin.jvm.Throws(java.lang.Exception::class)
+                                    override fun initChannel(ch: SocketChannel) {
                                         var pipeline: ChannelPipeline = ch.pipeline();
                                         /* 使用pipeline.addLast()添加，Decoder、Encode和Handler对象
                                           Decoder接收数据，Encode发送数据，Handler是编码和解码工具*/
                                         pipeline.addLast(StringEncoder(Charset.forName("UTF-8")));//全部编码为UTF-8
+                                        // pipeline.addLast(EncodeHandler());//发送前打包数据并编码
                                         pipeline.addLast(RegisterEncode());//设备注册信息
-                                        pipeline.addLast(HeartbeatDecode());//接收服务器返回的心跳包解析
-                                        pipeline.addLast(MsgHandler());//返回参数
+                                        //pipeline.addLast(HeartbeatDecode())
+                                        pipeline.addLast(DecodeHandler());//接收服务器返回的数据包解析
+
+
+                                        pipeline.addLast(MsgHandler());//接收返回数据
                                         pipeline.addLast(LoginEncode());//登录
                                     }
                                 })
@@ -83,17 +84,16 @@ object NettyConnect {
                         //使用监听，监听是否连接或是断开
                         // val future: ChannelFuture = bootstrap!!.connect(FinalValue.COMMAND_IP,FinalValue.COMMAND_PORT);
                         //{addListener(GenericFutureListener)}的方式来获得通知，而非await()。使用sync异步执行
-                        future = bootstrap!!.connect(COMMAND_IP,COMMAND_PORT)!!.sync();
+                        future = bootstrap!!.connect(COMMAND_IP, COMMAND_PORT)!!.sync();//// 发起异步连接操作
                         //如果连接成功则保存ChannelFuture到Channel
 //                        channel = future!!.awaitUninterruptibly().channel();
-//                        channel.closeFuture().sync();
                         if (future!!.isSuccess) {
                             //如果连接成功则保存ChannelFuture到Channel
-//                            channel = future!!.awaitUninterruptibly().channel();
-//                            channel.closeFuture().sync();
-                            //如果连接成功则保存ChannelFuture到Channel
-                           channel = future!!.channel() as Channel
-                            LogUtils.d("NettyConnect","服务器连接成功ipStr=${COMMAND_IP},portInt=${COMMAND_PORT}")
+                            channel = future!!.awaitUninterruptibly().channel();
+                            channel.closeFuture().sync();
+//                            //如果连接成功则保存ChannelFuture到Channel
+//                            channel = future!!.channel() as Channel
+                            LogUtils.d("NettyConnect", "服务器连接成功ipStr=${COMMAND_IP},portInt=${COMMAND_PORT}")
                             onDestrYN = true;//连接成功
                         } else {
                             onDestrYN = false;//连接失败
@@ -111,20 +111,22 @@ object NettyConnect {
                                                 //channel = future!!.awaitUninterruptibly().channel()
                                                 onDestrYN = true;//连接成功
                                             }
-
-                                        },
-                                        10,//2秒重新连接
+                                        }, 10,//2秒重新连接
                                         TimeUnit.SECONDS);
                             }
                         }
                     } catch (ex: Exception) {
-                        ex.printStackTrace()
-                        LogUtils.d("com.ftrd.flashlight.nettys.NettyConnect", "连接出现异常${ex.toString()}");
-                    } finally {
-                        LogUtils.d("com.ftrd.flashlight.nettys.NettyConnect", "连接关闭资源释放");
-                       // NettyConnect.destroy();
-                        //重新连接
-                        //reConnect();
+                        LogUtils.d("NettyConnect", "连接出现异常重新连接${ex.toString()}");
+                        executor.execute {
+                            try {
+                                TimeUnit.SECONDS.sleep(1)
+                                nettyDestroy();
+                                nettyConnect();// 发起重连操作
+                            } catch (e: InterruptedException) {
+                                e.printStackTrace();
+                            }
+                        }
+
                     }
                 }
             }
@@ -132,14 +134,15 @@ object NettyConnect {
         mThread!!.start();
     }
 
+    private val executor = Executors.newScheduledThreadPool(1)
     //? 表示当前对象是否可以为空
     //！！ 表示当前对象不为空的情况下执行
-    fun destroy() {
+    fun nettyDestroy() {
         // channel = null;
         //  Bootstrap
         bootstrap = null;
         //结束线程池
-        if (eventLoopGroup!=null){
+        if (eventLoopGroup != null) {
             eventLoopGroup!!.shutdownGracefully();
         }
         eventLoopGroup = null;
@@ -149,7 +152,10 @@ object NettyConnect {
         mThread = null;
         //结束连接
         if (future != null && future!!.isSuccess) {
-            channel!!.closeFuture();
+            /* 当对应的channel关闭的时候，就会返回对应的channel。
+                       Returns the ChannelFuture which will be notified when this channel is closed.
+                       This method always returns the same future instance.*/
+//            channel!!.closeFuture().sync();
             channel!!.flush();
             channel!!.close();
         }

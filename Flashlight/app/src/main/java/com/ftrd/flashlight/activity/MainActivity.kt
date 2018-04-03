@@ -1,23 +1,17 @@
 package com.ftrd.flashlight.activity
 
-import android.support.v7.app.AppCompatActivity
+
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
-import android.util.Log
-import android.widget.Toast
-import android.widget.Toast.LENGTH_SHORT
 import com.ftrd.flashlight.FileKt.database
-import com.ftrd.flashlight.FlashLight.Companion.instance
 import com.ftrd.flashlight.R
-
-
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.db.*
 
 /**
  * @author: Jeff <15899859876@qq.com>
  * @date:  2018-02-01 16:47
- * @description:
+ * @description: 主页，登录进入的第一个页面，任务列表和菜单列表的选择
  */
 class MainActivity : BaseActivity() {
     override fun into(savedInstanceState: Bundle?) {
@@ -26,19 +20,14 @@ class MainActivity : BaseActivity() {
         setContentView(R.layout.activity_main);
         //recyclerview
         //RecyclerView ds;
-      var  fdsa:RecyclerView ;
-     hello.setText("");
-       hello.setOnClickListener {
-           Toast.makeText(instance, "Hello, views!", LENGTH_SHORT).show();
-           Log.d("wxl", "retrolambda test");
+        var  fdsa:RecyclerView ;
 
-       }
 //nnew Thread(new Runnable() {
         Thread(Runnable {
 
             database.use {
 
-               var sss:SelectQueryBuilder =select("User", "name")
+                var sss:SelectQueryBuilder =select("User", "name")
                         .whereArgs("(_id > {userId}) and (name = {userName})",
                                 "userName" to "John",
                                 "userId" to 42)
@@ -51,15 +40,15 @@ class MainActivity : BaseActivity() {
                 }
 
                 createTable("Customer", true,
-                    "id" to INTEGER + PRIMARY_KEY + UNIQUE,
-                    "name" to TEXT,
-                    "photo" to BLOB) }
+                        "id" to INTEGER + PRIMARY_KEY + UNIQUE,
+                        "name" to TEXT,
+                        "photo" to BLOB) }
         });
 
 //        suspend fun doSomething(foo: Foo): Bar {
 //        }
 
-       // activity.hello.text = "Hello World!"
+        // activity.hello.text = "Hello World!"
     }
 }
 

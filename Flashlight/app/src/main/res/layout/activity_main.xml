@@ -1,15 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.ftrd.flashlight.activity.MainActivity">
+    style="@style/layout_style">
 
     <TextView
-        android:id="@+id/hello"
-        android:layout_width="wrap_content"
+        style="@style/text_style"
+        android:id="@+id/mainTvUserName"
+        android:text="欢迎登录"
+        android:layout_marginBottom="30dp"
+/>
+
+    <Button
+        android:id="@+id/mainButTask"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="任务列表" />
+
+    <Button
+        android:id="@+id/mainButMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="菜单列表" />
+
 
 </LinearLayout>

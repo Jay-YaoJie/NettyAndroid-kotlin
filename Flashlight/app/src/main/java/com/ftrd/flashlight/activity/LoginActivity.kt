@@ -7,6 +7,7 @@ import android.nfc.Tag
 import android.os.Bundle
 import com.ftrd.flashlight.FileKt.DefaultValue.USER_PWD
 import com.ftrd.flashlight.FileKt.LogUtils
+import com.ftrd.flashlight.FlashLight.Companion.eBus
 import com.ftrd.flashlight.R
 import com.ftrd.flashlight.nettys.buss.LoginBus
 import com.ftrd.flashlight.nettys.NettyConnect.channel
@@ -23,14 +24,12 @@ import kotlin.experimental.and
 /**
  * @author: Jeff <15899859876@qq.com>
  * @date:  2018-02-23 17:23
- * @description:用户登陆页面
+ * @description:用户登陆页面，刷卡登录
  */
 class LoginActivity : BaseActivity() {
     override fun into(savedInstanceState: Bundle?) {
         setContentView(R.layout.activity_login);
-        EventBus.getDefault().register(this);
-        //连接服务器
-        // NettyConnect.reConnect();
+        eBus.register(this);
         //刷卡登录
         nfcResolve(intent)
     }
@@ -47,46 +46,22 @@ class LoginActivity : BaseActivity() {
         } else if (loginBus?.loginResult.equals("0")) {
             ToastUtil.show("用户登录失败！");
         } else if (loginBus?.registertResult.equals("1")) {
-            acc_car.text = "设备注册成功,请刷卡登陆.";
+            loginTvCar.text = "设备注册成功,请刷卡登陆.";
         } else if (loginBus?.registertResult.equals("0")) {
-            acc_car.text = "设备注册失败,请联系管理员.";
+            loginTvCar.text = "设备注册失败,请联系管理员.";
         }
     }
 
     override fun keycodeEnter() {
         super.keycodeEnter();
-        if (boolean) {
-            if (mLoginBus?.registertResult.equals("1")) {
-                //设备注册成功,请刷卡登陆
-                //登录
-                channel!!.write(mLoginBus)
-            }
-        } else {
-            //退出系统
-            popAllActivities();
+        if (mLoginBus?.registertResult.equals("1")) {
+            //设备注册成功,请刷卡登陆
+            //登录
+            channel!!.write(mLoginBus)
         }
 
     }
 
-    //保存登录或退出状态
-    var boolean: Boolean = true;
-
-    @SuppressLint("ResourceAsColor")
-    override fun keycodeLeft() {
-        super.keycodeLeft()
-        loginButton.setBackgroundColor(R.color.loginButtonNO);
-        exitButton.setBackgroundColor(R.color.loginButtonOFF);
-        boolean = true;
-        // login.setBackgroundResource(resources.getColor(R.color.loginButtonNO))
-    }
-
-    @SuppressLint("ResourceAsColor")
-    override fun keycodeRight() {
-        super.keycodeRight()
-        loginButton.setBackgroundColor(R.color.loginButtonOFF);
-        exitButton.setBackgroundColor(R.color.loginButtonNO);
-        boolean = false;
-    }
 
     //使用NFC刷卡获得登录名和密码
     fun ByteArrayToHexString(inarray: ByteArray): String {
@@ -106,8 +81,9 @@ class LoginActivity : BaseActivity() {
         }
         return out
     }
-     fun nfcResolve(intent: Intent) {
-        LogUtils.v("LoginActivity", "resolve Intent :" + intent.toString())
+
+    fun nfcResolve(intent: Intent) {
+        //  LogUtils.v("LoginActivity", "resolve Intent :" + intent.toString())
         // Parse the intent
         val action = intent.action
         if (NfcAdapter.ACTION_TAG_DISCOVERED == action
@@ -123,8 +99,8 @@ class LoginActivity : BaseActivity() {
             LogUtils.v("LoginActivity", "myNFCID mac >> " + mac)
             LogUtils.v("LoginActivity", " tag >> " + tag.toString())
             LogUtils.v("LoginActivity", " rawMsgs >> " + rawMsgs)
-            acc_car.text = mac;
-            USER_PWD=mac;
+            loginTvCar.text = mac;
+            USER_PWD = mac;
             if (mLoginBus?.registertResult.equals("1")) {
                 //设备注册成功,请刷卡登陆
                 //登录
@@ -132,7 +108,7 @@ class LoginActivity : BaseActivity() {
             }
             /*buildTagViews(mac);*/
         } else {
-            LogUtils.e("LoginActivity", "Unknown intent " + intent)
+            //  LogUtils.e("LoginActivity", "Unknown intent " + intent)
             //finish();
             return
         }

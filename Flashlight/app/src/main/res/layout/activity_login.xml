@@ -1,76 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/color_title"
-    >
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/layout_style">
 
-    <LinearLayout
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_margin="30dp"
-        android:orientation="vertical">
+    <TextView
+        android:id="@+id/loginTvCar"
+        style="@style/text_style"
+        android:text="请刷卡登陆！"
+        android:layout_margin="30dp" />
 
+</LinearLayout>
 
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-
-            >
-            <TextView
-                android:id="@+id/acc_car"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#fff"
-                android:textSize="25sp"
-                android:gravity="center"
-                />
-
-            <TextView
-                android:id="@+id/acc_tv"
-                android:textColor="#fff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="25sp"
-                android:gravity="center"
-                />
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_margin="10dp"
-            android:orientation="horizontal"
-            >
-            <!--  android:visibility="gone" -->
-
-            <Button
-                android:background="#13c0ac"
-                android:layout_height="40dp"
-                android:layout_width="0dp"
-                android:text="登陆"
-                android:id="@+id/loginButton"
-                android:focusable="false"
-                android:textColor="#fff"
-                android:layout_weight="1"/>
-
-            <Button
-                android:background="@color/loginButtonOFF"
-                android:layout_height="40dp"
-                android:layout_width="0dp"
-                android:text="退出"
-                android:id="@+id/exitButton"
-                android:textColor="#fff"
-                android:layout_weight="1"
-                android:layout_marginLeft="10dp"
-                />
-
-        </LinearLayout>
-
-    </LinearLayout>
-</RelativeLayout>
